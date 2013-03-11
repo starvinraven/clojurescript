@@ -20,6 +20,11 @@
   [s]
   (.. s (split "") (reverse) (join "")))
 
+(defn- re-flags->str [match]
+  (-> "g"
+    (str (if (.-ignoreCase match) "i" ""))
+    (str (if (.-multiline match) "m" ""))))
+
 (defn replace
   "Replaces all instance of match with replacement in s.
    match/replacement can be:
@@ -30,7 +35,7 @@
   (cond (string? match)
         (.replace s (js/RegExp. (gstring/regExpEscape match) "g") replacement)
         (.hasOwnProperty match "source")
-        (.replace s (js/RegExp. (.-source match) "g") replacement)
+        (.replace s (js/RegExp. (.-source match) (re-flags->str match)) replacement)
         :else (throw (str "Invalid match arg: " match))))
 
 (defn replace-first

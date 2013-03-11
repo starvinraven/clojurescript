@@ -11,6 +11,10 @@
   (assert (= "barbarbar" (s/replace "foobarfoo" "foo" "bar")))
   (assert (= "FOObarFOO" (s/replace "foobarfoo" #"foo" s/upper-case)))
   (assert (= "barbar)foo" (s/replace "foo(bar)foo" "foo(" "bar")))
+  (assert (= "FoObar" (s/replace "FoObar" #"foo" "bar")))
+  (assert (= "barbar" (s/replace "FoObar" #"(?i)foo" "bar")))
+  (assert (= "foo\nfoo" (s/replace "foo\nbar" #"(?m)^bar" "foo")))
+  (assert (= "foo\nbar" (s/replace "foo\nbar" #"^bar" "foo")))
   ;; join
   (assert (= "" (s/join nil)))
   (assert (= "" (s/join [])))
